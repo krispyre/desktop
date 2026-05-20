@@ -42,8 +42,7 @@
 #weathers {
   min-height: 40%;
 
-  margin-left: -1em;
-  margin-right: -1em;
+  margin: 0 -1em;
   min-width: 100%;
 }
 
