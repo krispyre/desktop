@@ -7,6 +7,10 @@
   color: aliceblue;
   padding: 1em;
   font-size: 2em;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .weather * {
@@ -33,4 +37,16 @@
   display: flex;
   flex-direction: column;
   font-size: 60%;
+}
+
+#weathers {
+  min-height: 40%;
+
+  margin-left: -1em;
+  margin-right: -1em;
+  min-width: 100%;
+}
+
+#warnings {
+  min-height: 20%;
 }
