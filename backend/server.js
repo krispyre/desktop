@@ -21,13 +21,12 @@ app.get("/weather/getMaxMinTemp", async (req, res) => {
 
   if (!apiRes.ok) throw new Error("Network error");
   const tempRanges = await apiRes.text();
-  console.log(tempRanges);
+  // console.log(tempRanges);
   const temps = parse(tempRanges)[STATION_POS];
   console.log(temps);
   max = temps[2];
   min = temps[3];
 
-  console.log("max is 2990 min is 3 yo");
   res.status(201).send({ max, min });
 });
 

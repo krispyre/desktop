@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import "./weather.css";
 /* I read the forecast to see weather in the next few hours, so future information would be emphasized
  */
 
@@ -51,10 +51,10 @@ const Weather = () => {
   return (
     <div className="weather">
       <div id="topBar">
-        <div>Whole day sunny/ Rain soon</div>
-        <div>
-          <div>{curTemp}</div>
-          <div>
+        <div id="info">Whole day sunny</div>
+        <div id="temps">
+          <div id="curTemp">{curTemp}</div>
+          <div id="tempRange">
             <div>{minTemp}</div>
             <div>{maxTemp}</div>
           </div>
