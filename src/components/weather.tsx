@@ -19,11 +19,12 @@ const Weather = () => {
     fetch("http://localhost:4106/weather/getMaxMinTemp")
       .then((res) => {
         if (!res.ok) throw new Error("Network error");
-        return res.text();
+        return res.json();
       })
       .then((data) => {
         console.warn(data);
-        setMaxTemp(data);
+        setMaxTemp(parseFloat(data.max));
+        setMinTemp(parseFloat(data.min));
       })
       .catch((e) =>
         console.error("Failed to fetch climate and weather info:", e),
@@ -54,8 +55,8 @@ const Weather = () => {
         <div>
           <div>{curTemp}</div>
           <div>
-            <div>lowest temp</div>
-            <div>highest temp</div>
+            <div>{minTemp}</div>
+            <div>{maxTemp}</div>
           </div>
         </div>
       </div>
