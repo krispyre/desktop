@@ -14,6 +14,8 @@ const Weather = () => {
   const [minTemp, setMinTemp] = useState(67);
   const [maxTemp, setMaxTemp] = useState(69);
 
+  const [tempUnit, setTempUnit] = useState("°C");
+
   useEffect(() => {
     /* for max min temp */
     fetch("http://localhost:4106/weather/getMaxMinTemp")
@@ -53,10 +55,19 @@ const Weather = () => {
       <div id="topBar">
         <div id="info">Whole day sunny</div>
         <div id="temps">
-          <div id="curTemp">{curTemp}</div>
+          <div id="curTemp">
+            {curTemp}
+            <span className="tempUnit">{tempUnit}</span>
+          </div>
           <div id="tempRange">
-            <div>{minTemp}</div>
-            <div>{maxTemp}</div>
+            <div>
+              {minTemp}
+              <span className="tempUnit">{tempUnit}</span>
+            </div>
+            <div>
+              {maxTemp}
+              <span className="tempUnit">{tempUnit}</span>
+            </div>
           </div>
         </div>
       </div>
