@@ -57,5 +57,10 @@
   #warnings {
     min-height: 20%;
     align-content: flex-end;
+
+    .warningIcons {
+      aspect-ratio: 1;
+      display: flex;
+    }
   }
 }

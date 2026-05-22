@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./weather.css";
+import WarningIcon from "./weatherParts/warningIcon";
 /* I read the forecast to see weather in the next few hours, so future information would be emphasized
  */
 
@@ -14,6 +15,8 @@ const Weather = () => {
   const [minTemp, setMinTemp] = useState(67);
   const [maxTemp, setMaxTemp] = useState(69);
 
+  const [warnings, setWarnings] = useState<string[]>([]);
+
   const [tempUnit, setTempUnit] = useState("°C");
 
   useEffect(() => {
@@ -24,7 +27,6 @@ const Weather = () => {
         return res.json();
       })
       .then((data) => {
-        console.warn(data);
         setMaxTemp(parseFloat(data.max));
         setMinTemp(parseFloat(data.min));
       })
@@ -48,6 +50,19 @@ const Weather = () => {
     if (curForecast) {
       console.log(curForecast);
     }
+
+    fetch(
+      "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=en",
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Network error");
+        return res.json();
+      })
+      .then((data) => {
+        setWarnings(Object.keys(data));
+        console.log(Object.keys(data));
+      })
+      .catch((e) => console.error("Failed to fetch forecast:", e));
   }, []);
 
   return (
@@ -73,9 +88,27 @@ const Weather = () => {
       </div>
 
       <div id="weathers"></div>
-      <div id="warnings"></div>
+      <div id="warnings">
+        {warnings.map((w) => (
+          <WarningIcon code={w} />
+        ))}
+      </div>
     </div>
   );
 };
 
 export default Weather;
+
+/*WFIRE: Fire Danger Warning
+WFROST: Frost Warning
+WHOT: Hot Weather Warning
+WCOLD: Cold Weather Warning
+WMSGNL: Strong Monsoon Signal
+WRAIN: Rainstorm Warning Signal
+WFNTSA: Special Announcement on Flooding in
+the northern New Territories
+WL: Landslip Warning
+WTCSGNL: Tropical Cyclone Warning Signal
+WTMW: Tsunami Warning
+WTS: Thunderstorm Warning
+*/
