@@ -4,31 +4,41 @@ const WarningIcon = ({ code }) => {
   const code2icon = (code: string) => {
     code = code.toLowerCase();
     switch (true) {
-      case /WFIRE(y|r)/.test(code):
+      case /wfire[yr]/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/fire${code.at(-1)}.gif`;
-      case /WFROST/.test(code):
+      case /wfrost/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/frost.gif`;
-      case /WHOT/.test(code):
+      case /whot/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/vhot.gif`;
-      case /WCOLD/.test(code):
+      case /wcold/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/cold.gif`;
-      case /WMSGNL/.test(code):
+      case /wmsgnl/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/sms.gif`;
-      case /WFNTSA/.test(code):
+      case /wfntsa/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/ntfl.gif`;
-      case /WL/.test(code):
+      case /wl/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/landslip.gif`;
-      case /WRAIN[arb]/.test(code):
+      case /wrain[arb]/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/rain${code.at(-1)}.gif`;
-      case /WTCSGNL/.test(code):
+      case /wtcsgnl[139(10)]/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/tc${code.at(-1)}.gif`;
-      case /WTMW/.test(code):
+      case /wtcsgnl8[a-z]{2}/.test(code):
+        return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/tc${code.slice(-2)}.gif`;
+
+      case /wtmw/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/tsunami-warn.gif`;
-      case /WTS/.test(code):
+      case /wts/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/ts.gif`;
     }
   };
-  return <div className="warningIcon">{code}</div>;
+
+  // console.log(code, code2icon(code));
+
+  return (
+    <div className="warningIcon">
+      <img src={code2icon(code)} />
+    </div>
+  );
 };
 
 export default WarningIcon;
@@ -49,8 +59,11 @@ WFNTSA: Special Announcement on Flooding in the northern New Territories
 https://www.hko.gov.hk/en/wxinfo/dailywx/images/ntfl.gif
 WL: Landslip Warning
 https://www.hko.gov.hk/en/wxinfo/dailywx/images/landslip.gif
+
 WTCSGNL: Tropical Cyclone Warning Signal 
 https://www.hko.gov.hk/en/wxinfo/dailywx/images/tc[n].gif
+
+https://www.hko.gov.hk/en/images/tc8[(ne)|(ns)|()].gif
 WTMW: Tsunami Warning
 https://www.hko.gov.hk/en/wxinfo/dailywx/images/tsunami-warn.gif
 WTS: Thunderstorm Warning

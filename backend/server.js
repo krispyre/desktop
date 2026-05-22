@@ -41,15 +41,19 @@ app.get("/weather/getWarnings", async (req, res) => {
   res
     .status(200)
     .send([
-      "WFIRE",
+      "WFIREY",
+      "WFIRER",
       "WFROST",
       "WHOT",
       "WCOLD",
       "WMSGNL",
-      "WRAIN",
+      "WRAINA",
+      "WRAINR",
+      "WRAINB",
       "WFNTSA",
       "WL",
-      "WTCSGNL",
+      "WTCSGNL3",
+      "WTCSGNL8NW",
       "WTMW",
       "WTS",
     ]);
