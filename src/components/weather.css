@@ -2,8 +2,23 @@
   max-height: 30vh;
   aspect-ratio: 1;
   border-radius: 4%;
-  background-color: #544d62;
-
+  background-image: linear-gradient(
+    180deg,
+    hsl(240deg 38% 33%) 0%,
+    hsl(235deg 38% 33%) 8%,
+    hsl(231deg 38% 32%) 17%,
+    hsl(226deg 38% 32%) 25%,
+    hsl(222deg 37% 31%) 33%,
+    hsl(217deg 37% 31%) 42%,
+    hsl(212deg 37% 31%) 50%,
+    hsl(208deg 37% 30%) 58%,
+    hsl(203deg 36% 30%) 67%,
+    hsl(199deg 36% 29%) 75%,
+    hsl(194deg 36% 29%) 83%,
+    hsl(189deg 35% 28%) 92%,
+    hsl(185deg 35% 28%) 100%
+  );
+  /* awesome sauce, merci josh https://www.joshwcomeau.com/gradient-generator/*/
   color: aliceblue;
   padding: 1em;
   font-size: 2em;
@@ -13,7 +28,7 @@
   gap: 1em;
 
   * {
-    border: 1px solid black;
+    /* border: 1px solid black; */
   }
 
   #topBar {
@@ -51,11 +66,20 @@
   #weathers {
     min-height: 40%;
 
-    margin: 0 -1em;
+    /* margin: 0 -1em; */
     min-width: 100%;
+    display: flex;
+    flex-direction: column;
 
-    .weatherIcon {
-      max-height: 100%;
+    #weatherIcons {
+      height: 80%;
+      .weatherIcon {
+        height: 100%;
+      }
+    }
+
+    #time {
+      text-align: right;
     }
   }
 

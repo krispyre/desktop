@@ -89,11 +89,12 @@ const Weather = () => {
       </div>
 
       <div id="weathers">
-        <div>
+        <div id="weatherIcons">
           {weatherIcons.map((i) => (
             <WeatherIcon code={i} />
           ))}
         </div>
+        <sub id="time">{TODAY.getHours() + ":" + TODAY.getMinutes()}</sub>
       </div>
       <div id="warnings">
         {warnings.map((w) => (
