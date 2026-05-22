@@ -23,7 +23,7 @@ const WarningIcon = ({ code }) => {
       case /wtcsgnl[139(10)]/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/tc${code.at(-1)}.gif`;
       case /wtcsgnl8[a-z]{2}/.test(code):
-        return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/tc${code.slice(-2)}.gif`;
+        return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/tc8${code.slice(-2)}.gif`;
 
       case /wtmw/.test(code):
         return `https://www.hko.gov.hk/en/wxinfo/dailywx/images/tsunami-warn.gif`;
