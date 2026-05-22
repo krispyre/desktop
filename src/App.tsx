@@ -1,10 +1,10 @@
-import Weather from "./components/weather";
+import Weather from "./components/Weather";
 import TodoList from "./components/TodoList";
 import "./App.css";
 function App() {
   return (
     <>
-      <main>
+      <main className="widgets">
         <Weather />
         <TodoList />
       </main>

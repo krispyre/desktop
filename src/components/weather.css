@@ -1,8 +1,7 @@
 .weather {
   max-height: 30vh;
   aspect-ratio: 1;
-  border-radius: 4%;
-  background-image: linear-gradient(
+  background: linear-gradient(
     180deg,
     hsl(240deg 38% 33%) 0%,
     hsl(235deg 38% 33%) 8%,

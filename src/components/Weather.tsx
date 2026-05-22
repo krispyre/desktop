@@ -67,7 +67,7 @@ const Weather = () => {
   }, []);
 
   return (
-    <div className="weather">
+    <div className="widget weather">
       <div id="topBar">
         <div id="info">Whole day sunny</div>
         <div id="temps">

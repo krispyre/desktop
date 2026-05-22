@@ -6,5 +6,18 @@ html {
 
 :root {
   background-color: hsl(0, 8%, 24%);
+}
+#root {
+  min-width: 100vw;
+  min-height: 100vh;
+}
+.widgets {
   padding: 2em;
+  gap: 1em;
+
+  display: flex; /*idk how to setup grid*/
+  .widget {
+    border-radius: 2vh;
+    display: flex;
+  }
 }

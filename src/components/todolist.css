@@ -1,0 +1,23 @@
+.todo {
+  background-color: rgb(172, 164, 164);
+  padding: 1em;
+
+  max-width: 60%;
+  min-height: 50%;
+
+  display: flex;
+  flex-direction: column;
+
+  .todoItem {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    input[type="checkbox"] {
+    }
+  }
+}
+
+hr {
+  /*i have no clue why it's only 2x2 what*/
+  width: 100%;
+}
