@@ -30,5 +30,30 @@ app.get("/weather/getMaxMinTemp", async (req, res) => {
   res.status(201).send({ max, min });
 });
 
+app.get("/weather/getWarnings", async (req, res) => {
+  const apiRes = await fetch(
+    "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=en",
+  );
+  if (!apiRes.ok) throw new Error("Network error");
+  const warnings = await apiRes.json();
+  // res.status(200).send(Object.keys(warnings));
+
+  res
+    .status(200)
+    .send([
+      "WFIRE",
+      "WFROST",
+      "WHOT",
+      "WCOLD",
+      "WMSGNL",
+      "WRAIN",
+      "WFNTSA",
+      "WL",
+      "WTCSGNL",
+      "WTMW",
+      "WTS",
+    ]);
+});
+
 console.log("Listening on 4106");
 app.listen(4106);

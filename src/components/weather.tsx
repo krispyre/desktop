@@ -6,7 +6,7 @@ import WarningIcon from "./weatherParts/warningIcon";
 
 const Weather = () => {
   const TODAY = new Date();
-  const PLACE = "Wong Tai Sin";
+  const PLACE = "Sha Tin";
 
   const [nineDayForecast, setNineDayForecast] = useState(null);
   const [curForecast, setCurForecast] = useState(null);
@@ -51,18 +51,15 @@ const Weather = () => {
       console.log(curForecast);
     }
 
-    fetch(
-      "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=en",
-    )
+    fetch("http://localhost:4106/weather/getWarnings")
       .then((res) => {
         if (!res.ok) throw new Error("Network error");
         return res.json();
       })
       .then((data) => {
-        setWarnings(Object.keys(data));
-        console.log(Object.keys(data));
+        setWarnings(data);
       })
-      .catch((e) => console.error("Failed to fetch forecast:", e));
+      .catch((e) => console.error("Failed to fetch warnings:", e));
   }, []);
 
   return (
@@ -98,17 +95,3 @@ const Weather = () => {
 };
 
 export default Weather;
-
-/*WFIRE: Fire Danger Warning
-WFROST: Frost Warning
-WHOT: Hot Weather Warning
-WCOLD: Cold Weather Warning
-WMSGNL: Strong Monsoon Signal
-WRAIN: Rainstorm Warning Signal
-WFNTSA: Special Announcement on Flooding in
-the northern New Territories
-WL: Landslip Warning
-WTCSGNL: Tropical Cyclone Warning Signal
-WTMW: Tsunami Warning
-WTS: Thunderstorm Warning
-*/
