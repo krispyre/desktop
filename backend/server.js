@@ -1,3 +1,4 @@
+/* Had to use my own server bc front end can't read csv bc of cors restrictions lol */
 import express from "express";
 import cors from "cors";
 import { parse } from "csv-parse/sync";

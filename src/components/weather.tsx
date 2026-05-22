@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./weather.css";
 import WarningIcon from "./weatherParts/warningIcon";
+import WeatherIcon from "./weatherParts/WeatherIcon";
 /* I read the forecast to see weather in the next few hours, so future information would be emphasized
  */
 
@@ -14,6 +15,8 @@ const Weather = () => {
   const [curTemp, setCurTemp] = useState(68);
   const [minTemp, setMinTemp] = useState(67);
   const [maxTemp, setMaxTemp] = useState(69);
+
+  const [weatherIcons, setWeatherIcons] = useState<number[]>([]);
 
   const [warnings, setWarnings] = useState<string[]>([]);
 
@@ -42,6 +45,7 @@ const Weather = () => {
         return res.json();
       })
       .then((data) => {
+        setWeatherIcons(data.icon);
         setCurForecast(data);
         setCurTemp(data.temperature.data.find((d) => d.place == PLACE).value);
       })
@@ -84,7 +88,13 @@ const Weather = () => {
         </div>
       </div>
 
-      <div id="weathers"></div>
+      <div id="weathers">
+        <div>
+          {weatherIcons.map((i) => (
+            <WeatherIcon code={i} />
+          ))}
+        </div>
+      </div>
       <div id="warnings">
         {warnings.map((w) => (
           <WarningIcon code={w} />

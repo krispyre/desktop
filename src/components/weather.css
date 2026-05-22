@@ -53,6 +53,10 @@
 
     margin: 0 -1em;
     min-width: 100%;
+
+    .weatherIcon {
+      max-height: 100%;
+    }
   }
 
   #warnings {
