@@ -40,11 +40,12 @@
   #curTemp {
     text-align: left;
     vertical-align: middle;
+    font-size: 1.5em;
   }
   #tempRange {
     display: flex;
     flex-direction: column;
-    font-size: 60%;
+    font-size: 0.7em;
   }
 
   #weathers {
@@ -57,10 +58,14 @@
   #warnings {
     min-height: 20%;
     align-content: flex-end;
+    display: flex;
 
-    .warningIcons {
+    overflow: scroll;
+    mask-image: linear-gradient(to right, black 82%, transparent);
+
+    .warningIcon {
       aspect-ratio: 1;
-      display: flex;
+      max-height: 100%;
     }
   }
 }

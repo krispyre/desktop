@@ -34,11 +34,7 @@ const WarningIcon = ({ code }) => {
 
   // console.log(code, code2icon(code));
 
-  return (
-    <div className="warningIcon">
-      <img src={code2icon(code)} />
-    </div>
-  );
+  return <img className="warningIcon" src={code2icon(code)} />;
 };
 
 export default WarningIcon;
