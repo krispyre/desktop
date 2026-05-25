@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import { parse } from "csv-parse/sync";
 
+import { pool as db } from "./db.js";
+
 const app = express();
 
 const STATION_POS = 4 + 1; //"HK Observatory"; // use the HKO one, placeholder, se cookie todo?
@@ -13,6 +15,7 @@ app.use(
     origin: "http://localhost:5173",
   }),
 );
+app.use(express.json());
 app.get("/weather/getMaxMinTemp", async (req, res) => {
   let max = 69,
     min = 67;
@@ -22,9 +25,8 @@ app.get("/weather/getMaxMinTemp", async (req, res) => {
 
   if (!apiRes.ok) throw new Error("Network error");
   const tempRanges = await apiRes.text();
-  // console.log(tempRanges);
   const temps = parse(tempRanges)[STATION_POS];
-  console.log(temps);
+  console.log("get temp range:", tempRanges, temps);
   max = temps[2];
   min = temps[3];
 
@@ -37,8 +39,8 @@ app.get("/weather/getWarnings", async (req, res) => {
   );
   if (!apiRes.ok) throw new Error("Network error");
   const warnings = await apiRes.json();
-  // res.status(200).send(Object.keys(warnings));
-
+  res.status(200).send(Object.keys(warnings));
+  return;
   res
     .status(200)
     .send([
@@ -60,5 +62,27 @@ app.get("/weather/getWarnings", async (req, res) => {
     ]);
 });
 
-console.log("Listening on 4106");
-app.listen(4106);
+const USER_ID = 2;
+const LIST_ID = 0;
+
+app.get("/todolist/getListItems", async (req, res) => {
+  console.log("get list");
+  const result = await db.query(
+    `select * from todoitems where user_id = ${USER_ID} and list_id = ${LIST_ID} ;`,
+  );
+  res.send(result.rows);
+});
+
+app.post("/todolist/addListItem", async (req, res) => {
+  const new_desc = req.body.description;
+  console.log(new_desc);
+  const result = await db.query(
+    `insert into todoitems (user_id, is_done, description, list_id) values (${USER_ID}, false, '${new_desc}', ${LIST_ID})`,
+  );
+  console.log(result);
+  res.status(201);
+});
+
+app.listen(4106, () => {
+  console.log("Listening on 4106");
+});
