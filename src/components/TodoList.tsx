@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+
 import "./todolist.css";
 import TodoItem from "./todoParts/TodoItem";
 
@@ -17,29 +19,25 @@ const TodoList = () => {
     console.warn("add item, update to db, success/fail");
 
     (async () => {
-      const res = await fetch("http://localhost:4106/todolist/addListItem", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Tells the server to expect JSON data
-        },
-        body: JSON.stringify({
+      axios
+        .post("http://localhost:4106/todolist/addListItem", {
           description: newTodo,
-        }),
-      });
-      if (!res.ok) {
-        throw new Error("Bruh add item fail");
-      }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     })();
   };
 
   useEffect(() => {
     const getListItems = async () => {
-      const res = await fetch("http://localhost:4106/todolist/getListItems");
-      if (!res.ok) {
-        throw new Error("Brouh");
-      }
-      const items = await res.json();
-      const todoList: todoItem[] = items.map((item) => ({
+      const res = await axios.get(
+        "http://localhost:4106/todolist/getListItems",
+        {
+          timeout: 5000,
+        },
+      );
+      const todoList: todoItem[] = res.data.map((item) => ({
         isDone: item.is_done,
         desc: item.description,
       }));

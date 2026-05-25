@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+
 import "./weather.css";
 import WarningIcon from "./weatherParts/warningIcon";
 import WeatherIcon from "./weatherParts/WeatherIcon";
@@ -9,7 +11,7 @@ const Weather = () => {
   const TODAY = new Date();
   const PLACE = "Sha Tin";
 
-  const [nineDayForecast, setNineDayForecast] = useState(null);
+  // const [nineDayForecast, setNineDayForecast] = useState(null);
   const [curForecast, setCurForecast] = useState(null);
 
   const [curTemp, setCurTemp] = useState(68);
@@ -23,48 +25,73 @@ const Weather = () => {
   const [tempUnit, setTempUnit] = useState("°C");
 
   useEffect(() => {
-    /* for max min temp */
-    fetch("http://localhost:4106/weather/getMaxMinTemp")
-      .then((res) => {
-        if (!res.ok) throw new Error("Network error");
-        return res.json();
-      })
-      .then((data) => {
-        setMaxTemp(parseFloat(data.max));
-        setMinTemp(parseFloat(data.min));
-      })
-      .catch((e) =>
-        console.error("Failed to fetch climate and weather info:", e),
-      );
+    // An AbortController allows us to cancel all 3 network requests if the component unmounts
+    const controller = new AbortController();
 
-    fetch(
-      "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en",
-    )
-      .then((res) => {
-        if (!res.ok) throw new Error("Network error");
-        return res.json();
-      })
-      .then((data) => {
+    const getTempRanges = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4106/weather/getMaxMinTemp",
+          {
+            signal: controller.signal,
+          },
+        );
+        setMaxTemp(parseFloat(response.data.max));
+        setMinTemp(parseFloat(response.data.min));
+      } catch (e) {
+        if (!axios.isCancel(e)) {
+          console.error("Failed to fetch climate and weather info:", e);
+        }
+      }
+    };
+
+    const getCurForecast = async () => {
+      try {
+        const response = await axios.get(
+          "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en",
+          { signal: controller.signal },
+        );
+
+        const data = response.data;
         setWeatherIcons(data.icon);
         setCurForecast(data);
-        setCurTemp(data.temperature.data.find((d) => d.place == PLACE).value);
-      })
-      .catch((e) => console.error("Failed to fetch forecast:", e));
 
-    if (curForecast) {
-      console.log(curForecast);
-    }
+        const placeData = data.temperature.data.find((d) => d.place === PLACE);
+        if (placeData) {
+          setCurTemp(placeData.value);
+        }
+      } catch (e) {
+        if (!axios.isCancel(e)) {
+          console.error("Failed to fetch forecast:", e);
+        }
+      }
+    };
 
-    fetch("http://localhost:4106/weather/getWarnings")
-      .then((res) => {
-        if (!res.ok) throw new Error("Network error");
-        return res.json();
-      })
-      .then((data) => {
-        setWarnings(data);
-      })
-      .catch((e) => console.error("Failed to fetch warnings:", e));
-  }, []);
+    const getWarnings = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4106/weather/getWarnings",
+          {
+            signal: controller.signal,
+          },
+        );
+        setWarnings(response.data);
+      } catch (e) {
+        if (!axios.isCancel(e)) {
+          console.error("Failed to fetch warnings:", e);
+        }
+      }
+    };
+
+    getTempRanges();
+    getCurForecast();
+    getWarnings();
+
+    // cleanup function for uef oh wow
+    return () => {
+      controller.abort();
+    };
+  }, []); // Runs once on mount
 
   return (
     <div className="widget weather">

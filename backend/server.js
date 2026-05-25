@@ -1,9 +1,10 @@
 /* Had to use my own server bc front end can't read csv bc of cors restrictions lol */
 import express from "express";
 import cors from "cors";
-import { parse } from "csv-parse/sync";
+import { parse as parseCsv } from "csv-parse/sync";
 
 import { pool as db } from "./db.js";
+import axios from "axios";
 
 const app = express();
 
@@ -19,13 +20,15 @@ app.use(express.json());
 app.get("/weather/getMaxMinTemp", async (req, res) => {
   let max = 69,
     min = 67;
-  const apiRes = await fetch(
+  const apiRes = await axios.get(
     "https://data.weather.gov.hk/weatherAPI/hko_data/regional-weather/latest_since_midnight_maxmin.csv",
-  );
+    {
+      responseType: "text",
+    },
+  ); // returns csv
 
-  if (!apiRes.ok) throw new Error("Network error");
-  const tempRanges = await apiRes.text();
-  const temps = parse(tempRanges)[STATION_POS];
+  const tempRanges = apiRes.data;
+  const temps = parseCsv(tempRanges)[STATION_POS];
   console.log("get temp range:", tempRanges, temps);
   max = temps[2];
   min = temps[3];
@@ -34,12 +37,10 @@ app.get("/weather/getMaxMinTemp", async (req, res) => {
 });
 
 app.get("/weather/getWarnings", async (req, res) => {
-  const apiRes = await fetch(
+  const warnings = await axios.get(
     "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=en",
   );
-  if (!apiRes.ok) throw new Error("Network error");
-  const warnings = await apiRes.json();
-  res.status(200).send(Object.keys(warnings));
+  res.status(200).send(Object.keys(warnings.data));
   return;
   res
     .status(200)
@@ -75,7 +76,6 @@ app.get("/todolist/getListItems", async (req, res) => {
 
 app.post("/todolist/addListItem", async (req, res) => {
   const new_desc = req.body.description;
-  console.log(new_desc);
   const result = await db.query(
     `insert into todoitems (user_id, is_done, description, list_id) values (${USER_ID}, false, '${new_desc}', ${LIST_ID})`,
   );
