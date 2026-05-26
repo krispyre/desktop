@@ -80,7 +80,7 @@ app.post("/todolist/addListItem", async (req, res) => {
     `insert into todoitems (user_id, is_done, description, list_id) values (${USER_ID}, false, '${new_desc}', ${LIST_ID})`,
   );
   console.log(result);
-  res.status(201);
+  res.status(201).end();
 });
 
 app.listen(4106, () => {

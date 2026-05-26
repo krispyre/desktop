@@ -19,13 +19,17 @@ const TodoList = () => {
     console.warn("add item, update to db, success/fail");
 
     (async () => {
-      axios
+      const res = await axios
         .post("http://localhost:4106/todolist/addListItem", {
           description: newTodo,
         })
         .catch((error) => {
           console.error(error);
         });
+
+      if (res.status == 201) {
+        setTodoItems((prev) => [...prev, { isDone: false, desc: newTodo }]);
+      }
     })();
   };
 
