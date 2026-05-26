@@ -56,11 +56,12 @@ const TodoList = () => {
   };
 
   const handleUpdateItem = (id, newDesc, isDone) => {
+    console.log(id, newDesc, isDone, " new value");
     setTodoItems((prev) =>
       prev.map((todo) =>
         todo.id == id
           ? {
-              isDone: todo.isDone,
+              isDone: isDone,
               desc: newDesc,
               id: id,
             }
@@ -129,9 +130,12 @@ const TodoList = () => {
               isDone={todo.isDone}
               desc={todo.desc}
               handleDelItem={() => handleDelItem(todo.id)}
-              handleUpdateItem={(newDesc) =>
+              handleUpdateDesc={(newDesc) =>
                 handleUpdateItem(todo.id, newDesc, todo.isDone)
               } //todo change isdone
+              handleUpdateIsDone={(newDone) =>
+                handleUpdateItem(todo.id, todo.desc, newDone)
+              }
             />
           ))}
         </div>
