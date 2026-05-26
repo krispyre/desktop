@@ -95,6 +95,16 @@ app.delete("/todolist/delListItem", async (req, res) => {
   }
   res.status(200).send({ id: result.rows[0].todo_id });
 });
+
+app.patch("/todolist/updateListItem", async (req, res) => {
+  const result = await db.query(
+    "update todoitems set is_done = $1, description = $2 WHERE todo_id = $3 RETURNING todo_id, description, is_done;",
+    [req.body.isDone, req.body.description, req.body.id],
+  );
+  // todo fill in this line, should they be params or body?
+
+  console.log(result.rows);
+});
 app.listen(4106, () => {
   console.log("Listening on 4106");
 });
