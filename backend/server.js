@@ -83,6 +83,18 @@ app.post("/todolist/addListItem", async (req, res) => {
   res.status(201).send({ id: result.rows[0].todo_id });
 });
 
+app.delete("/todolist/delListItem", async (req, res) => {
+  const result = await db.query(
+    "DELETE FROM todoitems WHERE todo_id = $1 RETURNING todo_id;",
+    [req.query.id], // sql injection?!
+  );
+  console.log("deleted: ", result.rows);
+  if (result.rows.length == 0) {
+    // already deleted
+    res.status(204).end();
+  }
+  res.status(200).send({ id: result.rows[0].todo_id });
+});
 app.listen(4106, () => {
   console.log("Listening on 4106");
 });

@@ -37,8 +37,22 @@ const TodoList = () => {
     })();
   };
 
-  const handleDelItem = () => {
-    console.log(213);
+  const handleDelItem = (id) => {
+    const delItem = async () => {
+      const res = await axios.delete(
+        "http://localhost:4106/todolist/delListItem",
+        {
+          params: {
+            id,
+          },
+        },
+      );
+      if (res.status == 200) {
+        setTodoItems((prev) => prev.filter((item) => item.id != res.data.id));
+      }
+    };
+
+    delItem();
   };
 
   useEffect(() => {
@@ -52,6 +66,7 @@ const TodoList = () => {
       const todoList: todoItem[] = res.data.map((item) => ({
         isDone: item.is_done,
         desc: item.description,
+        id: item.todo_id,
       }));
 
       setTodoItems(todoList);
@@ -72,7 +87,7 @@ const TodoList = () => {
               key={todo.id}
               isDone={todo.isDone}
               desc={todo.desc}
-              handleDelItem={handleDelItem}
+              handleDelItem={() => handleDelItem(todo.id)}
             />
           ))}
         </div>
