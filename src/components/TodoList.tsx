@@ -55,6 +55,47 @@ const TodoList = () => {
     delItem();
   };
 
+  const handleUpdateItem = (id, newDesc, isDone) => {
+    setTodoItems((prev) =>
+      prev.map((todo) =>
+        todo.id == id
+          ? {
+              isDone: todo.isDone,
+              desc: newDesc,
+              id: id,
+            }
+          : todo,
+      ),
+    );
+
+    // const updateItem = async () => {
+    //   const res = await axios.patch(
+    //     "http://localhost:4106/todolist/updateListItem",
+    //     {
+    //       params: {
+    //         id,
+    //         description: newDesc,
+    //         isDone,
+    //       },
+    //     },
+    //   );
+    //   if (res.status == 200) {
+    //     setTodoItems((prev) =>
+    //       prev.map((todo) =>
+    //         todo.id == res.data.id
+    //           ? {
+    //               isDone: res.data.is_done,
+    //               desc: res.data.description,
+    //               id: res.data.id,
+    //             }
+    //           : todo,
+    //       ),
+    //     );
+    //   }
+    // };
+    // updateItem();
+  };
+
   useEffect(() => {
     const getListItems = async () => {
       const res = await axios.get(
@@ -88,6 +129,9 @@ const TodoList = () => {
               isDone={todo.isDone}
               desc={todo.desc}
               handleDelItem={() => handleDelItem(todo.id)}
+              handleUpdateItem={(newDesc) =>
+                handleUpdateItem(todo.id, newDesc, todo.isDone)
+              } //todo change isdone
             />
           ))}
         </div>
