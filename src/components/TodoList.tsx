@@ -7,12 +7,13 @@ import TodoItem from "./todoParts/TodoItem";
 type todoItem = {
   isDone: boolean;
   desc: string;
+  id: number;
 };
 
 const TodoList = () => {
   const [newTodo, setNewTodo] = useState("");
   const [todoItems, setTodoItems] = useState<todoItem[]>([
-    { isDone: true, desc: "do stuff" },
+    { isDone: true, desc: "do stuff", id: -1 },
   ]);
 
   const handleAddItem = () => {
@@ -28,9 +29,16 @@ const TodoList = () => {
         });
 
       if (res.status == 201) {
-        setTodoItems((prev) => [...prev, { isDone: false, desc: newTodo }]);
+        setTodoItems((prev) => [
+          ...prev,
+          { isDone: false, desc: newTodo, id: res.data.id },
+        ]);
       }
     })();
+  };
+
+  const handleDelItem = () => {
+    console.log(213);
   };
 
   useEffect(() => {
@@ -60,7 +68,12 @@ const TodoList = () => {
       <div id="listBody">
         <div id="listItems">
           {todoItems.map((todo) => (
-            <TodoItem isDone={todo.isDone} desc={todo.desc} />
+            <TodoItem
+              key={todo.id}
+              isDone={todo.isDone}
+              desc={todo.desc}
+              handleDelItem={handleDelItem}
+            />
           ))}
         </div>
         <div id="addTodo">
@@ -72,7 +85,7 @@ const TodoList = () => {
             }}
             placeholder="add a new item..."
           />
-          <button id="addItem" onClick={handleAddItem}>
+          <button id="addItem" onClick={handleAddItem} disabled={newTodo == ""}>
             add item
           </button>
         </div>

@@ -77,10 +77,10 @@ app.get("/todolist/getListItems", async (req, res) => {
 app.post("/todolist/addListItem", async (req, res) => {
   const new_desc = req.body.description;
   const result = await db.query(
-    `insert into todoitems (user_id, is_done, description, list_id) values (${USER_ID}, false, '${new_desc}', ${LIST_ID})`,
+    `insert into todoitems (user_id, is_done, description, list_id) values (${USER_ID}, false, '${new_desc}', ${LIST_ID}) returning todo_id;`,
   );
   console.log(result);
-  res.status(201).end();
+  res.status(201).send({ id: result.rows[0].todo_id });
 });
 
 app.listen(4106, () => {
